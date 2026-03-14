@@ -12,6 +12,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 )
                 {
-                    BackgroundImage(
+                    MainInfo(
                         name = getString(R.string.student_name),
                         title = getString(R.string.student_discribe)
                     )
@@ -54,8 +59,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GreetingText(name: String, title: String, modifier: Modifier = Modifier) {
-
+fun AllObjects(name: String, title: String, modifier: Modifier = Modifier) {
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -64,14 +68,11 @@ fun GreetingText(name: String, title: String, modifier: Modifier = Modifier) {
             .fillMaxSize()
             .padding(top = 90.dp)
     ) {
-
-
-        Photo(
+        Avatar(
             modifier = Modifier
                 .size(210.dp)
                 .clip(MaterialTheme.shapes.medium)
         )
-
 
         Text(
             text = name,
@@ -81,7 +82,6 @@ fun GreetingText(name: String, title: String, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 90.dp)
         )
 
-
         Text(
             text = title,
             fontSize = 20.sp,
@@ -90,26 +90,30 @@ fun GreetingText(name: String, title: String, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 4.dp)
         )
 
-
         Column(
             modifier = Modifier.padding(top = 100.dp),
             horizontalAlignment = Alignment.Start
         ) {
-            ContactRow("📞",stringResource(R.string.phone_number), color = Color(0xFF355E3B))
-            ContactRow("🔗", stringResource(R.string.telegram), color = Color(0xFF355E3B))
-            ContactRow("✉️", stringResource(R.string.gmail_com), color = Color(0xFF355E3B))
+            ContactView(Icons.Default.Call, stringResource(R.string.phone_number), color = Color(0xFF355E3B))
+            ContactView(Icons.Default.Send, stringResource(R.string.telegram), color = Color(0xFF355E3B))
+            ContactView(Icons.Default.Email, stringResource(R.string.gmail_com), color = Color(0xFF355E3B))
         }
     }
 }
 
 @Composable
-fun ContactRow(icon: String, text: String, color: Color = Color.Black) {
+fun ContactView(iconRow: ImageVector, text: String, color: Color = Color.Black) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(vertical = 4.dp)
     ) {
-        Text(text = icon, fontSize = 20.sp, color = color)
+        Icon(
+            imageVector = iconRow,
+            contentDescription = stringResource(R.string.contact_info),
+            modifier = Modifier.size(20.dp),
+            tint = color
+        )
         Text(
             text = text,
             fontSize = 18.sp,
@@ -121,20 +125,20 @@ fun ContactRow(icon: String, text: String, color: Color = Color.Black) {
 }
 
 @Composable
-private fun BackgroundImage(name: String, title: String, modifier: Modifier = Modifier) {
+private fun MainInfo(name: String, title: String, modifier: Modifier = Modifier) {
 
     val image = painterResource(R.drawable.backphoto)
 
-    Box(modifier){
+    Box(modifier) {
         Image(
             painter = image,
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = Crop,
         )
-        GreetingText(
+        AllObjects(
             name = name,
-                title = title,
+            title = title,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
@@ -143,12 +147,12 @@ private fun BackgroundImage(name: String, title: String, modifier: Modifier = Mo
 }
 
 @Composable
-private fun Photo(modifier: Modifier = Modifier) {
+private fun Avatar(modifier: Modifier = Modifier) {
 
     Image(
         painter = painterResource(id = R.drawable.photo),
         contentDescription = stringResource(R.string.avatar_description),
-        contentScale = ContentScale.Crop,
+        contentScale = Crop,
         modifier = modifier
     )
 }
@@ -157,9 +161,9 @@ private fun Photo(modifier: Modifier = Modifier) {
 @Composable
 fun VisitPreview() {
     VisitCardTheme {
-            BackgroundImage(
-                name = stringResource(R.string.student_name),
-                title = stringResource(R.string.student_discribe)
-            )
+        MainInfo(
+            name = stringResource(R.string.student_name),
+            title = stringResource(R.string.student_discribe)
+        )
     }
 }
